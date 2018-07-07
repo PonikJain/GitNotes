@@ -1,0 +1,187 @@
+REF Link : https://blog.trifork.com/2014/07/14/how-to-remotely-debug-application-running-on-tomcat-from-within-intellij-idea/
+
+Remote Debugging On tomcat 8
+
+HOW TO REMOTELY DEBUG APPLICATION RUNNING ON TOMCAT FROM WITHIN INTELLIJ IDEA
+
+This post thus describes the procedure of setting up the ability to remotely debug a JVM application from within an IDE. The post outlines the procedure using IntelliJ IDEA as the IDE, and the remote application to be debugged would be web application running on Tomcat. The steps outlined below should apply with any remote JVM application and any IDE, although the exact steps may differ, the general idea would remain same. The post also gives a brief overview of the technologies that makes remote debugging possible.
+
+The Configuration Instructions
+The process of getting remote debugging working involves two steps.
+
+Starting Tomcat with remote debugging enabled and
+having your IDE, in our case IntelliJ IDEA, to be able to debug the remote tomcat application.
+There are couple of ways to get the first part done and it slightly differs depending on which OS environment your Tomcat instance is running on. But, regardless of the method used, the main idea behind the configuration remains the same; which is: pass specific start up options to the JVM that would enable remote debugging.
+
+The JVM start up arguments needed to have remote debugging activated can be set via JPDA_OPTS, CATALINA_OPTS and JAVA_OPTS although using JAVA_OPTS is not usually advised, reason being that the setting specified via JAVA_OPTS, is exposed to all JVM applications, but with CATALINA_OPTS the settings defined is limited only to Tomcat.
+
+USING JPDA_OPTS
+Using the JPDA_OPTS, option you would have the needed start-up argument set in a file named setenv.sh (or setenv.bat if on windows). Create the file if it does not exist already. Have it in the CATALINA_HOME/bin directory. And add this to the content:
+
+1
+export JPDA_OPTS="-agentlib:jdwp=transport=dt_socket, address=1043, server=y, suspend=n"
+and if on Windows:
+
+1
+set JPDA_OPTS="-agentlib:jdwp=transport=dt_socket, address=1043, server=y, suspend=n"
+What these settings basically do is to enable remote debugging and configure available options: specifying the communication protocol between the running application and the debugger, (ie transport=dt_socket) the port at which the remote application should debugged (ie address=1403). The server=y setting indicates that this JVM would be the one to be debugged while suspend=n is used to tell the JVM to execute right away and not wait for an attached debugger. If set to “y” then the application would be suspended and not run until a debugger is attached.
+
+A good situation where you would want to have suspend=y is when debugging an issue that prevents an application from starting successfully, having suspend=y would make sure that the JVM waits for the remote debugger to connect before attempting to start and run the application.
+
+Although the settings can be put directly inside catalina.sh (or catalina.bat) it is always preferable to have extra configurations in the setenv.* file. It would be automatically be picked up by Tomcat.
+
+Note that another options you may encounter that may be used to enable remote debugging is:
+
+1
+-Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=1043, suspend=n
+The difference between this and the recommended setting is that the -Xdebug and -Xrunjdwp option is the old way of enabling remote debugging; it applies to JVM prior to JAVA 5.0 (JAVA 1.5.0) while -agentlib:jdwp option applies to JAVA 5.0 and beyond…And with this configuration in place, you can then start Tomcat via the command line arguments:
+
+1
+$CATALINA_HOME/bin/catalina.sh jpda start
+USING JAVA_OPTS OR CATALINA_OPTS
+If you have Tomcat running as a windows service, then configuring Tomcat to start up with ability to be debugged remotely is done by simply specifying the start up arguments in the run properties.
+
+Open up the Apache Tomcat properties dialog box, and under the Java tab add the required start up option:
+
+1
+-agentlib:jdwp=transport=dt_socket,address=1043,server=y,suspend=n
+Make sure that each entry is on a new line and there are no spaces between the options
+
+With this added to the options, starting the Tomcat service would have remote debugging enabled.
+
+If per chance you are not running Tomcat on Windows as a service, to enable remote debugging, you need to specify the required options in the setenv.bat file:
+
+1
+set CATALINA_OPTS="-agentlib:jdwp=transport=dt_socket,address=1043,server=y,suspend=n"
+If you are running on linux you have:
+
+1
+export CATALINA_OPTS="-agentlib:jdwp=transport=dt_socket,address=1043,server=y,suspend=n"
+Start Tomcat like you would normally then do by running the catalina.bat or catalina.sh script.
+
+STARTING TOMCAT WITH JPDA
+Another way of running Tomcat with remote debugging is to use the JPDA switch, to start Tomcat; this would automactically have remote debugging enabled with its options set to default values.
+
+For example, this:
+
+1
+catalina jpda start
+would start Tomcat with the following settings:
+
+1
+-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+But what if you want to change any of these default settings and still use the JPDA start switch? This can be done by setting the appropiate environment variable for the options as required by Tomcat. The environment variables are:
+
+JPDA_TRANSPORT: to specify JPDA transport used
+JPDA_ADDRESS: to specify port for remote debugging
+JPDA_SUSPEND: to specify if to suspend JVM after startup
+
+so running:
+
+1
+ export JPDA_ADDRESS="8080"
+and then
+
+1
+catalina jpda start
+would have remote debugging possible on port 8080.
+
+Configuring IntelliJ IDEA
+With the remote JVM running the Tomcat started with the required start up arguments, the next thing to do is to configure the debugger in IntelliJ IDEA.
+
+There are two ways to this configuration: The Remote Tomcat settings options or Remote settings option.
+
+Using The Remote Tomcat Settings Option.
+
+Click on Run ➝ Edit Configuration:
+
+ 
+
+intellij-remote-debug
+
+ 
+
+ 
+
+The Edit Configuration… settings dialog box, pops up.
+
+Click on the + button on the top left ➝ Tomcat Server ➝ Remote. As shown below:
+
+ 
+
+intellij-remote-debug-2
+
+ 
+
+Next is to fill in the required settings.
+
+On the Server tab, specify the host details and the port the remote Tomcat is running on:
+
+ 
+
+intellij-remote-debug-3
+
+ 
+
+Then switch to the Startup/Connection tab, where you would specify the details of the remote JVM needed to be debugged from intellij IDEA.
+
+Click on Debug and specify the port you specified while configuring the Tomcat; 1043 in our case.
+
+ 
+
+intellij-remote-debug-4
+
+ 
+
+And that is it. Click on Ok to save your changes, then start the debugging session by pressing the debug icon or by using the keyboard shortcut (shift + f9)
+
+If all the configuration is set up correctly, you should see a notice that the IDE has successfully connected to the target VM in the Debug tab in the bottom console:
+
+ 
+
+intellij-remote-debug-5
+
+ 
+
+Using the Remote settings option
+
+Open the Edit Configuration settings as done in the previous option but instead of selecting the Remote Tomcat, select the Remote option:
+
+ 
+
+intellij-remote-debug-6
+
+ 
+
+The Remote settings dialog box appears where you can specify the required configuration; remote host, port, project etc:
+
+ 
+
+intellij-remote-debug-7
+
+ 
+
+As you can see from above, the interesting thing about the Remote option is that, apart from allowing you to configure intelliJ IDEA, it also list the various configurations required to start up the remote JVM in other for remote debugging to work. Might come in handy.
+
+Specify the required settings, click Ok to save changes, and start the debugging session. You should also see the notice that IntelliJ has successfully connected to the remote VM.
+
+Once this is done, you should then open the source code of the application you have running on the remote Tomcat, put a breakpoint where required and you can go ahead and start debugging as if the application is running on your local machine.
+
+So that is it with the configuration, the next question is, what makes all these fit and work together?
+
+Let us take a quick work through of the technology at play that makes remote debugging JVM possible.
+
+How Remote JVM Debugging Works
+It all starts with what is referred to as Agents.
+
+The JVM, which runs the complied .class sources has a feature that allows externally libraries (written in either Java or C++) to be injected into the JVM, just about runtime. These external libraries are referred to as Agents and they have the ability to modify the content of the .class files been run. These Agents have access to functionality of the JVM that is not accessible from within a regular Java code running inside the JVM and they can be used to do interesting stuff like injecting and modify the running source code, profiling etc. Tools like JRebel makes use of this piece of functionality to achieve their magic.
+
+And to pass an Agent Lib to a JVM, you do so via start up arguments, using the -agentlib:libname[=options] format.
+
+So in the configuration we had above:
+
+1
+-agentlib:jdwp=transport=dt_socket,address=1043,server=y,suspend=n
+We were actually passing an Agent Lib named jdwp to the JVM running Tomcat. The jdwp is a JVM specific, optional implementation of the JDWP (Java Debug Wire Protocol) that is used for defining communication between a debugger and a running JVM. It’s implementation, if present is supplied as a native library of the JVM as either jdwp.so or jdwp.dll
+
+
