@@ -1,0 +1,27 @@
+Git Commands  : Tutorial link : https://www.youtube.com/watch?v=FyAAIHHClqI
+
+1. To check how many branch are available :     git branch
+
+2. To crate new branch  :  git branch <branch_name>
+
+3. To move to the another branch /or checkout the branch: git checkout <branch_name>
+
+4. To check the GIT head pointer : git log --all --decorate --oneline --graph
+
+5. Create a alias for command for for short : alias graph="git log --all --decorate --oneline --graph
+"
+So by just writing the graph we can see the status of HEAD pointer
+
+6.To check diff between two branches : git diff <first_branch>..<second_branch>
+
+7. Merging branch : for that we need to move to the branch where we want to merge and then run the following command
+        git merge <branch_name_which_we_want_to_merge>
+        
+ 8. Checked the merged branch : git branch --merged
+ 
+ 9. DELETE THE BEANCH AFTER MERGING :  git branch -d <branch_name>
+ if you want to do it forcefully without merging : git branch -D <branch_name>
+ 
+ 
+ 
+ 
