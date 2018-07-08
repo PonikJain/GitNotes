@@ -22,6 +22,19 @@ So by just writing the graph we can see the status of HEAD pointer
  9. DELETE THE BEANCH AFTER MERGING :  git branch -d <branch_name>
  if you want to do it forcefully without merging : git branch -D <branch_name>
  
+ 10. Shortcut commad to create and checkout the branch  : git checkout -b <branch_name>
+ 
+ ------------------------------------------------------
+ 
+ Stash : IF we are working on a branch and we want to switch to another without committing the changes then we can 
+ stash them to that state so that we can later on access those changes and continue to work on that.
+ 
+ command to stash : git stash 
+ 
+ to check the stashed file list : git stash list
+ 
+ to apply the stached file changes again : git stash apply
+ 
  
  
  
