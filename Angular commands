@@ -1,0 +1,5 @@
+Angular commands :
+
+1. ng new <Project-Name> : Create a new Project.
+
+2. ng g c <name of Component> : to create  new componet and it will create component file , html,css ,ts , spec file and it also update the app module and register new component.

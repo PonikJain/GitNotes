@@ -1,0 +1,32 @@
+Angular :
+
+
+1. Node JS : It is a runtime environment for running the Java Script out of the browser. Node provides some tools that we need to build the Angular application.
+
+2. NPM (Node Package Manager ) : Is used to install 3rd party Libraries.
+
+3. Angular CLI : command line interface for angular and used to perform some basic operation of creating application and to generate boiler plate code .
+
+4. Webpack : Angular CLI used webpack for build automation tool . And it compile the all scripts and stylesheet and puts it in bundle. It creates mainly four bundles 
+	4.1. : polyfills.bundle.js : the polyfills script bundle to fill gap between the Angular JS features and Browser supported features.
+	4.2. : main.bundle.js : all the source code of our application.
+	4.3. : style.bundle.js : includes all the styleSheets .
+	4.4 : vendor.bundle.js : all the third party library src code. It gets created in developement mode and get ignored in PROD mode.
+	4.5 : inline.bundle.js : This is webpack loader file .
+		
+
+5. InterPolation  : In Angular component we use '{{}}' to render dynamic data into the HTML template.
+
+6. Directives : directive is use ful to add and remove the node in DOM . It is used to modify the DOM Object . In Angular every directive starts with * (ancintric).
+
+Ex : *ngFor used for iterating over the Arrays :
+
+<ul>
+	<li *ngFor = "<expression>"></li>
+</ul>
+
+expression : *ngFor = "let item of items"
+
+<ul>
+	<li *ngFor = "let item of items"> {{ item }} </li>
+</ul>

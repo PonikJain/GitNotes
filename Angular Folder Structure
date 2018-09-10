@@ -1,0 +1,45 @@
+Angular Folder Structure :
+
+1. e2e : It is used to writer End to End test for the Application. It can automate the testing to open up the browser and navigate to the home screen and to perform other 	
+		 operation on that.
+
+2. node_modules : Contains all the file and libraries on that our application is depend upon. This folder is completely for DEVELOPEMENT. So when we compile our application the parts of application put into the bundle and deployed with our application. We will not deploying on server.
+
+3.src : The main folder where our all code will reside.
+
+4.src/app : This has comaponent and modules . Every application have atleast one module and component.
+
+5.src/assets : It will contain all the static content of the application like image files, icons and etc.
+
+6.src/environments : This is used to store the configuration for different environments.
+
+7.src/environments/environment.prod.ts : configuration file for PROD environment.
+
+8.src/environments/environment.ts : configuration file for DEV/LOCAL environment.
+
+9.src/favicon.ico : ICON for the application.
+
+10.src/index.html : index file of project.
+
+11. src/main.ts : The main starting point of the application. This is. just like the main method of any other application where the flow get started and Here. in this we perform the bootstrapping of the main module.
+
+12. src/polyfills.ts : This file import some script those are required to running Angular because angular has some feature of JavaScript and those are not supported by most of the current browsers. This polyfills fill the gap between the feature that angular needs and the features that browser javascripts supports.
+
+13.src/style.css : contains the global CSS that will apply to whole application .
+
+14.src/test.ts : test script for setting up test environment.
+
+15. ./.angular-cli.json : configuration file for angular CLI.
+
+16. ./.editorconfig : contains the Editor configuration (like vs code configuration).
+
+17. ./karma.config.js : configuration file for Karma which is a test runner for JavaScript code.
+
+18. ./package.json : main file that contains the build configuration and packaging information. It contains the application informationa and dependencies name for different environments.
+
+19. ./protractor.conf.js : configuration file to run the end to end testing.
+
+20.  ./tsconfig.js : configuration file for the TypeScript compiler.
+
+21. ./tslint.json : It includes the settings for the tslint. And TSLint is a static analysis tool that check our typeScript code for redeability , manitainability and functionality errors. 
+

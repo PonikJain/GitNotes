@@ -1,0 +1,25 @@
+1. Create a new repository in remote repository on GitHub.
+2. Then check whether you have installed GitHub.
+3. Go to Project folder and type “git init”.
+4. Change git ignore file and added maven and eclipse exclusion extensions
+5. Stagged the file using command “git add .”
+6. Commit the changes  : git commit -m “Message init commit of code”
+7. Open git account and copy the repo url.
+
+8. Add remote repository to local repository using command  :
+	git remote add origin https://github.com/PonikJain/Practice1.git
+
+9. Verify the new remote URL :  git remote -v
+
+10 . Push all the changes to remote location :
+		git push -u origin master
+11. Got error while pushing so tried to pull and got network error so resolved by 
+
+git config --global --unset https.proxy
+
+12. Git pull origin master
+
+13. If git add . Not works then use the following command with the force. 
+
+Git add . —force
+And then git status command to check the staged files and folder

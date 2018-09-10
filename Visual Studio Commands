@@ -1,0 +1,4 @@
+Visual Studio Commands :
+
+1. 'code .' : open terminal in VS and open terminal. And then go to Angular project Directry and execute the command and it will import the project in VS code view.
+
